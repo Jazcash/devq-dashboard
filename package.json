@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Jazcash/devq-dashboard/issues"
   },
-  "homepage": "https://github.com/Jazcash/devq-dashboard#readme"
+  "homepage": "https://github.com/Jazcash/devq-dashboard#readme",
+  "dependencies": {
+    "donedone.js": "0.0.3"
+  }
 }
