@@ -1,0 +1,19 @@
+<div id="app">
+    {{message}}
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.5.1/socket.io.min.js"></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script>
+    let socket = io();
+    let app = new Vue({
+        el: "#app",
+        data: {
+            message: "Hello Vue!"
+        }
+    });
+
+    socket.on("data", function(data){
+        console.log(data);
+    });
+</script>
