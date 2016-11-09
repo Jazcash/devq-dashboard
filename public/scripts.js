@@ -13,5 +13,6 @@ var app = new Vue({
 });
 
 socket.on("issues", function(issues){
+    console.log(issues);
     app.issues = issues;
 });

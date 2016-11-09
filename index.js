@@ -13,58 +13,72 @@ let donedone = new Donedone({
 });
 
 let filter = donedone.getGlobalFiltersSync().find((filter) => filter.name === config.filter);
-let _issues = donedone.getIssuesByFilterSync(filter.id).issues;
+let issues = {};
 
-let issues = {
-    backlog: [],
-    unassigned: [],
-    inprogress: [],
-    withclient: [],
-    golive: []
-};
+fetchIssues();
 
-console.log(_issues.length);
+setInterval(fetchIssues, 5000);
 
-for (let i=0; i<_issues.length; ++i){
-    let issue = _issues[i];
-    switch(issue.status.name){
-        case "Pushed Back": 
-            issues.backlog.push(issue);
-            break;
-        case "In Progress":
-            issues.inprogress.push(issue);
-            break;
-        case "Ready for Retest":
-            issues.withclient.push(issue);
-            break;
-    }
-}
+app.use(express.static('public'));
 
-console.log(_.sortBy(issues.withclient, function(item){
-    return item.fixer.name;
-}).map((x) => x.fixer.name));
+app.get("/", function(req, res){
+    res.sendFile(__dirname + "/index.html");
+});
 
-// setInterval(function(){
-//     issues = donedone.getIssuesByFilterSync(filter.id).issues;
-//     io.emit("issues", issues);
-// }, 5000);
+io.on("connection", function(socket){
+    console.log("A client connected");
 
-// app.use(express.static('public'));
-
-// app.get("/", function(req, res){
-//     res.sendFile(__dirname + "/index.html");
-// });
-
-// io.on("connection", function(socket){
-//     console.log("A client connected");
-
-//     socket.emit("issues", issues);
+    socket.emit("issues", issues);
     
-//     socket.on("disconnect", function(){
-//         console.log("A client disconnected");
-//     });
-// });
+    socket.on("disconnect", function(){
+        console.log("A client disconnected");
+    });
+});
 
-// http.listen(3002, function(){
-//     console.log("listening on *:3002");
-// });
+http.listen(3001, function(){
+    console.log("listening on *:3001");
+});
+
+function fetchIssues(){
+    let _issues = donedone.getIssuesByFilterSync(filter.id).issues;
+    let thisIssues = {
+        backlog: [],
+        unassigned: [],
+        inprogress: [],
+        withclient: [],
+        golive: [],
+        ungrouped: []
+    };
+
+    for (let i=0; i<_issues.length; ++i){
+        let issue = _issues[i];
+        switch(issue.status.name){
+            case "Pushed Back": 
+                thisIssues.backlog.push(issue);
+                break;
+            case "Open":
+                thisIssues.unassigned.push(issue);
+                break;
+            case "In Progress":
+                thisIssues.inprogress.push(issue);
+                break;
+            case "Ready for Retest":
+                thisIssues.withclient.push(issue);
+                break;
+            case "Ready For Next Release":
+                thisIssues.golive.push(issue);
+                break;
+            default:
+                thisIssues.ungrouped.push(issue);
+        }
+    }
+
+    thisIssues.withclient = _.chain(thisIssues.withclient)
+        .sortBy((issue) => issue.fixer.name)
+        .map((issue) => issue.fixer.name)
+        .value();
+
+    issues = thisIssues;
+
+    io.emit("issues", issues);
+}
