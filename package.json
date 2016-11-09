@@ -19,6 +19,19 @@
   "dependencies": {
     "donedone.js": "^0.0.4",
     "express": "^4.14.0",
-    "socket.io": "^1.5.1"
+    "socket.io": "^1.5.1",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.17.5",
+    "gulp": "^3.9.1",
+    "gulp-cssnano": "^2.1.2",
+    "gulp-jshint": "^2.0.2",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.2",
+    "gulp-sourcemaps": "^2.2.0",
+    "gulp-uglify": "^2.0.0"
   }
 }

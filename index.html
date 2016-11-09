@@ -1,25 +1,11 @@
-<div id="app">
-    <issue v-for="item in issues" v-bind:issue="item"></issue>
-</div>
+<link rel="stylesheet" href="/build/styles.css">
+
+<body>
+    <div id="app">
+        <issue v-for="item in issues" v-bind:issue="item"></issue>
+    </div>
+</body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.5.1/socket.io.min.js"></script>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
-<script>
-    let socket = io();
-
-    Vue.component("issue", {
-        props: ["issue"],
-        template: "<div class='issue'>{{issue.title}}</div>"
-    });
-
-    var app = new Vue({
-        el: "#app",
-        data: {
-            issues: []
-        }
-    });
-
-    socket.on("issues", function(issues){
-        app.issues = issues;
-    });
-</script>
+<script src="/build/scripts.js"></script>
