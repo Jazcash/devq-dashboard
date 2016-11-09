@@ -1,0 +1,19 @@
+{
+  "name": "devq-dashboard",
+  "version": "0.0.1",
+  "description": "A view of Quba's dev queue Donedone tickets",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jazcash/devq-dashboard.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jazcash/devq-dashboard/issues"
+  },
+  "homepage": "https://github.com/Jazcash/devq-dashboard#readme"
+}
