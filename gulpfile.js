@@ -6,7 +6,12 @@ var browserSync = require('browser-sync').create();
 
 gulp.task("sass", function () {
 	return gulp.src("./public/styles.scss")
-	.pipe(plumber())
+	.pipe(plumber({
+        errorHandler: function (err) {
+            console.log(err);
+            this.emit('end');
+        }
+    }))
 	.pipe(sass())
 	.pipe(gulp.dest("./public/build"))
 	.pipe(browserSync.stream());
@@ -14,7 +19,12 @@ gulp.task("sass", function () {
 
 gulp.task("scripts", function(){
 	return gulp.src("./public/scripts.js")
-	.pipe(plumber())
+	.pipe(plumber({
+        errorHandler: function (err) {
+            console.log(err);
+            this.emit('end');
+        }
+    }))
 	.pipe(gulp.dest("./public/build"))
 	.pipe(browserSync.stream());
 });
@@ -22,13 +32,13 @@ gulp.task("scripts", function(){
 gulp.task("watch", function() {
 	gulp.watch("./public/styles.scss", ["sass"]);
 	gulp.watch("./public/scripts.js", ["scripts"]);
-	gulp.watch("./index.js").on("change", browserSync.reload);
+	//gulp.watch(["./index.js", "./index.html"]).on("change", browserSync.reload);
 });
 
 gulp.task("browser-sync", ["nodemon"], function() {
     browserSync.init({
         proxy: {
-			target: "http://localhost:3001",
+			target: "http://localhost:3002",
 			ws: true
 		},
         port: 7001
