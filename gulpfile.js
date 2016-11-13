@@ -6,7 +6,7 @@ var browserSync = require('browser-sync').create();
 
 gulp.task("sass", function () {
 	return gulp.src("./public/styles.scss")
-	.pipe(plumber())
+	.pipe(plumber({ errorHandler: handleError }))
 	.pipe(sass())
 	.pipe(gulp.dest("./public/build"))
 	.pipe(browserSync.stream());
@@ -38,7 +38,8 @@ gulp.task("browser-sync", ["nodemon"], function() {
 gulp.task("nodemon", function (cb) {
 	var started = false;
 	return nodemon({
-		script: "index.js"
+		script: "index.js",
+		ignore: ["public/"]
 	}).on('start', function () {
 		if (!started) {
 			cb();
@@ -53,3 +54,8 @@ gulp.task("default", [
 	"browser-sync",
 	"watch"
 ]);
+
+function handleError(err) {
+	console.log(err.toString());
+	this.emit('end');
+}

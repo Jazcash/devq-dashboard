@@ -1,8 +1,31 @@
 <link rel="stylesheet" href="/build/styles.css">
 
 <body>
-    <div id="app">
-        <issue v-for="item in issues" v-bind:issue="item"></issue>
+    <div class="columns">
+        <div class="column col-4">
+            <div class="status">Backlog</div>
+            <div class="issues" id="backlog"></div>
+        </div>
+        <div class="column col-2">
+            <div class="status">Unassigned</div>
+            <div class="issues" id="unassigned"></div>
+        </div>
+        <div class="column col-1">
+            <div class="status">In Progress</div>
+            <div class="issues" id="inprogress"></div>
+        </div>
+        <div class="column col-3">
+            <div class="status">With AM</div>
+            <div class="issues" id="onuat"></div>
+        </div>
+        <div class="column col-1">
+            <div class="status">Ready for retest</div>
+            <div class="issues" id="withclient"></div>
+        </div>
+        <div class="column col-1">
+            <div class="status">To Go Live</div>
+            <div class="issues" id="golive"></div>
+        </div>
     </div>
 </body>
 
