@@ -11,17 +11,12 @@ let donedone = new Donedone({
     username: config.username,
     apikey: config.apikey
 });
-
+let issues = [];
 let filter = donedone.getGlobalFiltersSync().find((filter) => filter.name === config.filter);
-let issues = donedone.getIssuesByFilterSync(filter.id).issues;
-
-function fetchIssues(){
-    issues = donedone.getIssuesByFilterSync(filter.id).issues;
-    io.emit("issues", issues);
-}
 
 fetchIssues();
-setInterval(fetchIssues, 10000);
+
+//setInterval(fetchIssues, 5000);
 
 app.use(express.static('public'));
 
@@ -31,14 +26,17 @@ app.get("/", function(req, res){
 
 io.on("connection", function(socket){
     console.log("A client connected");
-
-    socket.emit("issues", issues);
-    
+    socket.emit("init", {config: config, issues: issues});
     socket.on("disconnect", function(){
         console.log("A client disconnected");
     });
 });
 
-http.listen(3002, function(){
-    console.log("listening on *:3002");
+http.listen(3001, function(){
+    console.log("listening on *:3001");
 });
+
+function fetchIssues(){
+    issues = donedone.getIssuesByFilterSync(filter.id).issues;
+    io.emit("issues", issues);
+}
