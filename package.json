@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/Jazcash/devq-dashboard.git"
   },
-  "author": "",
+  "author": "Jazcash",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Jazcash/devq-dashboard/issues"
