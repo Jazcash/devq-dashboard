@@ -46,7 +46,7 @@ body{
 	display: flex;
 	width: calc(100vw / 12);
 	padding: 2px;
-	font-size: 8px;
+	font-size: 10px;
 	text-decoration: none;
 	color: #333;
 }
@@ -57,4 +57,7 @@ body{
     display: flex;
     flex-direction: column;
     padding: 2px;
+}
+.project{
+	font-weight: 600;
 }

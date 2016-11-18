@@ -3,7 +3,7 @@ let socket = io();
 let backlogEl = document.getElementById("backlog");
 let unassignedEl = document.getElementById("unassigned");
 let inprogressEl = document.getElementById("inprogress");
-let onuatEl = document.getElementById("onuat");
+let retestEl = document.getElementById("retest");
 let withclientEl = document.getElementById("withclient");
 let goliveEl = document.getElementById("golive");
 
@@ -12,7 +12,7 @@ let devNames = [];
 
 socket.on("init", function(data){
     config = data.config;
-    devNames = config.devs.map((dev) => dev.name);
+    devNames = config.people.devs;
     renderIssues(data.issues);
 });
 
@@ -26,28 +26,36 @@ function renderIssues(issues){
     let backlogFrag = document.createDocumentFragment();
     let unassignedFrag = document.createDocumentFragment();
     let inprogressFrag = document.createDocumentFragment();
-    let onuatFrag = document.createDocumentFragment();
+    let retestFrag = document.createDocumentFragment();
     let withclientFrag = document.createDocumentFragment();
     let goliveFrag = document.createDocumentFragment();
 
+    let backlogCount = 0;
+
     for(let i=0; i<issues.length; i++){
         let issue = issues[i];
+        let colour = config.colours[devNames.indexOf(issue.fixer.name)];
+        if (colour !== undefined){
+            issue.colour = colour.bg;
+        }
         switch(issue.status.name){
             case "On Hold":
-                backlogFrag.appendChild(createIssueEl(issue));
+                if (backlogCount < 20){
+                    backlogFrag.appendChild(createIssueEl(issue));
+                    backlogCount++;
+                }
                 break;
             case "Open":
                 if (devNames.indexOf(issue.fixer.name) !== -1){
-                    let colour = config.devs[devNames.indexOf(issue.fixer.name)].colour;
-                    inprogressFrag.appendChild(createIssueEl(issue, colour));
-                } else if(issue.fixer.name === "Unassigned Dev"){
+                    inprogressFrag.appendChild(createIssueEl(issue));
+                } else if(issue.fixer.name === "Quba unassigned"){
                     unassignedFrag.appendChild(createIssueEl(issue));
-                } else {
-                    onuatFrag.appendChild(createIssueEl(issue));
+                } else if (issue.fixer.name === "Quba with client"){
+                    withclientFrag.appendChild(createIssueEl(issue));
                 }
                 break;
             case "Ready for Retest":
-                withclientFrag.appendChild(createIssueEl(issue));
+                retestFrag.appendChild(createIssueEl(issue));
                 break;
             case "Ready for Next Release":
                 goliveFrag.appendChild(createIssueEl(issue));
@@ -57,7 +65,7 @@ function renderIssues(issues){
     updateList(backlogEl, backlogFrag);
     updateList(unassignedEl, unassignedFrag);
     updateList(inprogressEl, inprogressFrag);
-    updateList(onuatEl, onuatFrag);
+    updateList(retestEl, retestFrag);
     updateList(withclientEl, withclientFrag);
     updateList(goliveEl, goliveFrag);
 }
@@ -69,7 +77,7 @@ function updateList(el, frag){
     el.appendChild(frag);
 }
 
-function createIssueEl(issue, colour){
+function createIssueEl(issue){
     let issueEl = document.createElement("a");
     issueEl.className = "issue";
     issueEl.href = `https://${config.subdomain}.mydonedone.com/issuetracker/projects/${issue.project.id}/issues/${issue.order_number}`;
@@ -77,11 +85,11 @@ function createIssueEl(issue, colour){
 
     let innerIssueEl = document.createElement("div");
     innerIssueEl.className = "issue-inner";
-    innerIssueEl.style = `background-color: ${colour}`;
+    innerIssueEl.style = `background-color: ${issue.colour}`;
 
     let issueProjectEl = document.createElement("div");
     issueProjectEl.className = "project";
-    issueProjectEl.textContent = issue.project.name;
+    issueProjectEl.textContent = issue.project.name.split("Dev Queue - ")[1];
 
     let issueTitleEl = document.createElement("div");
     issueTitleEl.className = "title";

@@ -38,7 +38,7 @@ gulp.task("watch", function() {
 gulp.task("browser-sync", ["nodemon"], function() {
     browserSync.init({
         proxy: {
-			target: "http://localhost:3002",
+			target: "http://localhost:3020",
 			ws: true
 		},
         port: 7001
