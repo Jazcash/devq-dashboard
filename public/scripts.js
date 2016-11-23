@@ -21,8 +21,6 @@ socket.on("issues", function(issues){
 });
 
 function renderIssues(issues){
-    console.log(issues);
-
     let backlogFrag = document.createDocumentFragment();
     let unassignedFrag = document.createDocumentFragment();
     let inprogressFrag = document.createDocumentFragment();
@@ -34,10 +32,16 @@ function renderIssues(issues){
 
     for(let i=0; i<issues.length; i++){
         let issue = issues[i];
+
         let colour = config.colours[devNames.indexOf(issue.fixer.name)];
         if (colour !== undefined){
-            issue.colour = colour.bg;
+            issue.colour = colour;
         }
+
+        if (issue.due_date !== null){
+            issue.due_date = new Date(parseInt(issue.due_date.substring(6, 19)));
+        }
+
         switch(issue.status.name){
             case "On Hold":
                 if (backlogCount < 20){
@@ -68,6 +72,8 @@ function renderIssues(issues){
     updateList(retestEl, retestFrag);
     updateList(withclientEl, withclientFrag);
     updateList(goliveEl, goliveFrag);
+
+    console.log(issues);
 }
 
 function updateList(el, frag){
@@ -85,7 +91,15 @@ function createIssueEl(issue){
 
     let innerIssueEl = document.createElement("div");
     innerIssueEl.className = "issue-inner";
-    innerIssueEl.style = `background-color: ${issue.colour}`;
+    if (issue.colour)
+        innerIssueEl.style = `background-color: ${issue.colour.bg}; color: ${issue.colour.fg}`;
+
+    if (issue.due_date){
+        let issueBadgeEl = document.createElement("div");
+        issueBadgeEl.className = "badge";
+        issueBadgeEl.textContent = Math.round((issue.due_date - new Date()) / (1000*60*60*24));
+        innerIssueEl.appendChild(issueBadgeEl);
+    }
 
     let issueProjectEl = document.createElement("div");
     issueProjectEl.className = "project";

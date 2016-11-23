@@ -10,8 +10,7 @@ body{
 	margin: 0;
 	padding: 0;
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background: #e5e5e5;
-    color: #333;
+	background: #333;
 }
 
 ::-webkit-scrollbar{
@@ -30,35 +29,47 @@ body{
 }
 .column{
 	height: 100%;
+	background: #333;
+	&:nth-child(even){
+		background: #383838;
+	}
 }
 .status{
 	padding: 5px;
-    margin-bottom: 3px;
-    background: #d9d9d9;
-	border-right: 1px solid #bbb;
-	border-bottom: 1px solid #bbb;
+	margin-bottom: 3px;
+	background: #282828;
+	border-right: 1px solid #444;
+	border-bottom: 1px solid #444;
+	color: #ddd;
 }
 .issues{
 	display: flex;
 	flex-wrap: wrap;
 }
 .issue{
+	position: relative;
 	display: flex;
 	width: calc(100vw / 12);
 	padding: 2px;
 	font-size: 10px;
 	text-decoration: none;
-	color: #333;
-	word-break: break-all;
+	color: #bbb;
+	word-break: break-word;
 }
 .issue-inner{
-    width: 100%;
-    border: 1px solid #ccc;
-	background: #fafafa;
-    display: flex;
-    flex-direction: column;
-    padding: 2px;
+	width: 100%;
+	border: 1px solid #555;
+	background: #222;
+	display: flex;
+	flex-direction: column;
+	padding: 4px;
 }
 .project{
 	font-weight: 600;
+}
+.badge{
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	padding: 2px;
 }
