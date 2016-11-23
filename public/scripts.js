@@ -29,6 +29,11 @@ function renderIssues(issues){
     let goliveFrag = document.createDocumentFragment();
 
     let backlogCount = 0;
+    let inProgressIssues = [];
+
+    issues = issues.sort(function(a, b){
+        return a.project.name.localeCompare(b.project.name);
+    });
 
     for(let i=0; i<issues.length; i++){
         let issue = issues[i];
@@ -51,7 +56,7 @@ function renderIssues(issues){
                 break;
             case "Open":
                 if (devNames.indexOf(issue.fixer.name) !== -1){
-                    inprogressFrag.appendChild(createIssueEl(issue));
+                    inProgressIssues.push(issue);
                 } else if(issue.fixer.name === "Quba unassigned"){
                     unassignedFrag.appendChild(createIssueEl(issue));
                 } else if (issue.fixer.name === "Quba with client"){
@@ -64,6 +69,16 @@ function renderIssues(issues){
             case "Ready for Next Release":
                 goliveFrag.appendChild(createIssueEl(issue));
         }
+    }
+
+    console.log(inProgressIssues);
+
+    inProgressIssues = inProgressIssues.sort(function(a, b){
+        return a.fixer.name.localeCompare(b.fixer.name);
+    });
+
+    for (let i=0; i<inProgressIssues.length; ++i){
+        inprogressFrag.appendChild(createIssueEl(inProgressIssues[i]));
     }
 
     updateList(backlogEl, backlogFrag);
@@ -96,9 +111,17 @@ function createIssueEl(issue){
 
     if (issue.due_date){
         let issueBadgeEl = document.createElement("div");
-        issueBadgeEl.className = "badge";
+        issueBadgeEl.className = "duedate";
         issueBadgeEl.textContent = Math.round((issue.due_date - new Date()) / (1000*60*60*24));
         innerIssueEl.appendChild(issueBadgeEl);
+    }
+
+    let issuePriorityEl = document.createElement("div");
+    switch(issue.priority.name){
+        case "Low": issuePriorityEl.className = "priority low"; break;
+        case "Medium": issuePriorityEl.className = "priority medium"; break;
+        case "High": issuePriorityEl.className = "priority high"; break;
+        case "Critical": issuePriorityEl.className = "priority critical"; break;
     }
 
     let issueProjectEl = document.createElement("div");
@@ -109,6 +132,7 @@ function createIssueEl(issue){
     issueTitleEl.className = "title";
     issueTitleEl.textContent = issue.title;
 
+    innerIssueEl.appendChild(issuePriorityEl);
     innerIssueEl.appendChild(issueProjectEl);
     innerIssueEl.appendChild(issueTitleEl);
     issueEl.appendChild(innerIssueEl);
