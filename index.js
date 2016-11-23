@@ -16,7 +16,7 @@ let filter = donedone.getGlobalFiltersSync().find((filter) => filter.name === co
 
 fetchIssues();
 
-//setInterval(fetchIssues, 5000);
+setInterval(fetchIssues, 5000);
 
 app.use(express.static('public'));
 
