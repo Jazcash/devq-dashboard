@@ -73,6 +73,9 @@ body{
 	padding: 2px 4px;
 	border-top: 1px solid rgba(#fff,.4);
 	border-bottom: 2px solid rgba(#000,.4);
+	&:hover{
+		opacity: 0.9;
+	}
 }
 .priority{
 	position: absolute;
