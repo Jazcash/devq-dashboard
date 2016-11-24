@@ -1,29 +1,42 @@
 # devq-dashboard
-A view of Quba's dev queue Donedone tickets
+Displays DoneDone issues in a Kanban style view
 
-## Donedone Statuses
-- Open
-- In Progress
-- Not An Issue
-- Not Reproducible
-- Missing Information
-- Pushed Back
-- Ready For Next Release
-- Ready For Retest
-- Fix Not Confirmed
-- Fixed
-- Closed
-- On Hold
+## Usage
+Create a `config.json` file structured like so:  
 
-## Notes
+```json
+{
+    "subdomain": "coolcompany",
+    "username": "jimbob",
+    "apikey": "greatpassword",
+    "company": "Cool Company",
+    "filter": "Cool Company Queue",
+    "colours": [
+        {"bg": "#f1c40f", "fg": "rgba(0,0,0,.75)"},
+        {"bg": "#2ecc71", "fg": "rgba(0,0,0,.75)"},
+        {"bg": "#3498db", "fg": "rgba(0,0,0,.75)"},
+        {"bg": "#9b59b6", "fg": "rgba(0,0,0,.75)"},
+        {"bg": "#34495e", "fg": "rgba(0,0,0,.75)"},
+        {"bg": "#e67e22", "fg": "rgba(0,0,0,.75)"},
+        {"bg": "#e74c3c", "fg": "rgba(0,0,0,.75)"},
+        {"bg": "#1abc9c", "fg": "rgba(0,0,0,.75)"},
+        {"bg": "#d35400", "fg": "rgba(0,0,0,.75)"},
+        {"bg": "#27ae60", "fg": "rgba(0,0,0,.75)"}
+    ],
+    "people": {
+        "devs": [
+            "Jim Bob",
+            "Dave Brave",
+            "Adam Madam",
+            "Stu Brew",
+            "Tim Pim"
+        ],
+        "ams": [
+            "Jack Sprat",
+            "James Brames"
+        ]
+    }
+}
+```
 
-Viewport width = 1920px
-Number of colums = 6
-Column side padding = 10px
-Total side padding = 10px * (6 * 2) = 120px
-Remaining width = 1800px
-Single width column = 1800px/6 = 300px
-
-[May 26 | EST | Quba | #2928] Claims not adding the travel time in but is showing £200 even when it is zero hours
-
-London Luton Airport
+Run `npm install`, then `gulp`.
