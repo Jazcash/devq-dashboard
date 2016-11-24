@@ -109,11 +109,12 @@ function createIssueEl(issue){
     if (issue.colour)
         innerIssueEl.style = `background-color: ${issue.colour.bg}; color: ${issue.colour.fg}`;
 
+    let issueBadgeEl = document.createElement("div");
     if (issue.due_date){
-        let issueBadgeEl = document.createElement("div");
         issueBadgeEl.className = "duedate";
-        issueBadgeEl.textContent = Math.round((issue.due_date - new Date()) / (1000*60*60*24));
-        innerIssueEl.appendChild(issueBadgeEl);
+        let duedays = Math.round((issue.due_date - new Date()) / (1000*60*60*24));
+        let suffix = (duedays > 0) ? " days until due" : " days overdue";
+        issueBadgeEl.textContent = Math.abs(duedays) + suffix;
     }
 
     let issuePriorityEl = document.createElement("div");
@@ -135,6 +136,7 @@ function createIssueEl(issue){
     innerIssueEl.appendChild(issuePriorityEl);
     innerIssueEl.appendChild(issueProjectEl);
     innerIssueEl.appendChild(issueTitleEl);
+    innerIssueEl.appendChild(issueBadgeEl);
     issueEl.appendChild(innerIssueEl);
 
     return issueEl;

@@ -1,10 +1,5 @@
-$issue-width: 160px;
-
 *{
 	box-sizing: border-box;
-}
-html, body{
-	height: 100%;
 }
 body{
 	margin: 0;
@@ -12,36 +7,40 @@ body{
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 	background: #333;
 }
-
 ::-webkit-scrollbar{
 	display: none;
 }
-
-@for $i from 1 to 12{
-	.col-#{$i}{
-		width: ($issue-width * $i);
-	}
-}
-
-.columns{
+.cols{
 	display: flex;
-	height: 100%;
 }
-.column{
-	height: 100%;
+.col{
 	background: #333;
+	padding: 0 3px;
+	border-right: 1px solid #2c2c2c;
 	&:nth-child(even){
 		background: #383838;
 	}
+	@for $i from 1 to 12{
+		&-#{$i}{
+			width: ((100% / 11) * $i);
+			.issue{
+				width: (100% / $i);
+			}
+		}
+	}
 }
 .status{
+	margin-left: -4px;
+	width: calc(100% + 8px);
 	position: relative;
 	padding: 5px;
 	margin-bottom: 3px;
-	background: #282828;
+	background: #252525;
 	border-right: 1px solid #111;
+	border-left: 1px solid #111;
 	border-bottom: 1px solid #111;
-	color: #ddd;
+	color: #eee;
+	font-weight: 600;
 	&:after{
 		position: absolute;
 		content: "";
@@ -59,7 +58,6 @@ body{
 .issue{
 	position: relative;
 	display: flex;
-	width: calc(100vw / 12);
 	padding: 1px;
 	font-size: 10px;
 	text-decoration: none;
@@ -73,6 +71,8 @@ body{
 	display: flex;
 	flex-direction: column;
 	padding: 2px 4px;
+	border-top: 1px solid rgba(#fff,.4);
+	border-bottom: 2px solid rgba(#000,.4);
 }
 .priority{
 	position: absolute;
@@ -88,11 +88,12 @@ body{
 }
 .project{
 	font-weight: 600;
+	max-width: 93px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .duedate{
-	position: absolute;
-	top: 3px;
-	right: 18px;
-	z-index: 1;
-	color: rgba(#000, 0.8);
+	color: rgba(#000, 0.5);
+	font-weight: 600;
 }
