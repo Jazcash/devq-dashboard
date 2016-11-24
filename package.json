@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Jazcash/devq-dashboard#readme",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "donedone.js": "^0.0.4",
     "express": "^4.14.0",
     "socket.io": "^1.5.1",

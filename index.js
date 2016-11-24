@@ -3,13 +3,14 @@ const app = express();
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
 const _ = require("underscore");
+const bodyParser = require("body-parser");
 const Donedone = require("donedone.js");
 const config = require("./config");
 
 let donedone = new Donedone({
-    subdomain: config.subdomain,
-    username: config.username,
-    apikey: config.apikey
+	subdomain: config.subdomain,
+	username: config.username,
+	apikey: config.apikey
 });
 let issues = [];
 let filter = donedone.getGlobalFiltersSync().find((filter) => filter.name === config.filter);
@@ -19,24 +20,30 @@ fetchIssues();
 setInterval(fetchIssues, 5000);
 
 app.use(express.static('public'));
+app.use(bodyParser.json());
 
 app.get("/", function(req, res){
-    res.sendFile(__dirname + "/index.html");
+	res.sendFile(__dirname + "/index.html");
+});
+
+app.get("/pingdom", function(req, res){
+	console.log(req.body);
+	res.end();
 });
 
 io.on("connection", function(socket){
-    console.log("A client connected");
-    socket.emit("init", {config: config, issues: issues});
-    socket.on("disconnect", function(){
-        console.log("A client disconnected");
-    });
+	console.log("A client connected");
+	socket.emit("init", {config: config, issues: issues});
+	socket.on("disconnect", function(){
+		console.log("A client disconnected");
+	});
 });
 
 http.listen(3020, function(){
-    console.log("listening on *:3020");
+	console.log("listening on *:3020");
 });
 
 function fetchIssues(){
-    issues = donedone.getIssuesByFilterSync(filter.id).issues;
-    io.emit("issues", issues);
+	issues = donedone.getIssuesByFilterSync(filter.id).issues;
+	io.emit("issues", issues);
 }

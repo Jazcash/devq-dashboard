@@ -6,6 +6,7 @@ body{
 	padding: 0;
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 	background: #333;
+	padding-bottom: 45px;
 }
 ::-webkit-scrollbar{
 	display: none;
@@ -16,7 +17,6 @@ body{
 .col{
 	background: #333;
 	padding: 0 3px;
-	border-right: 1px solid #2c2c2c;
 	&:nth-child(even){
 		background: #383838;
 	}
@@ -34,13 +34,14 @@ body{
 	width: calc(100% + 8px);
 	position: relative;
 	padding: 5px;
-	margin-bottom: 3px;
-	background: #252525;
+	margin-bottom: 5px;
+	background: linear-gradient(to bottom, #282828 0%,#212121 100%);;
 	border-right: 1px solid #111;
 	border-left: 1px solid #111;
 	border-bottom: 1px solid #111;
 	color: #eee;
 	font-weight: 600;
+	text-align: center;
 	&:after{
 		position: absolute;
 		content: "";
@@ -77,26 +78,48 @@ body{
 		opacity: 0.9;
 	}
 }
-.priority{
-	position: absolute;
-	width: 9px;
-	height: 9px;
-	top: 6px;
-	right: 6px;
-	border: 1px solid rgba(#000,.2);
-	&.low{ background: #6da79b; }
-	&.medium{ background: #f39f09; }
-	&.high{ background: #f26f21; }
-	&.critical{ background: #952715; }
-}
 .project{
-	font-weight: 600;
-	max-width: 93px;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	font-weight: 700;
+	color: rgba(#000, 0.8);
 }
-.duedate{
+.date{
 	color: rgba(#000, 0.5);
 	font-weight: 600;
+	display: flex;
+	margin-top: auto;
+}
+.info-bar{
+	position: fixed;
+	background: linear-gradient(to bottom, #282828 0%,#212121 100%);;
+	border-top: 1px solid #111;
+	color: #eee;
+	width: 100%;
+	height: 40px;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	&:after{
+		position: absolute;
+		content: "";
+		width: 100%;
+		height: 1px;
+		background: rgba(#fff,.1);
+		top: 0;
+		left: 0;
+	}
+}
+.fixer-key{
+	display: flex;
+	align-items: center;
+	padding: 0 5px;
+}
+.fixer-colour{
+	width: 10px;
+	height: 10px;
+	margin-right: 5px;
+}
+.fixer-name{
+	font-size: 12px;
 }
