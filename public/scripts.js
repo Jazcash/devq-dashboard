@@ -9,20 +9,42 @@ let retestEl = document.getElementById("retest");
 let withclientEl = document.getElementById("withclient");
 let goliveEl = document.getElementById("golive");
 
+let alertsEl = document.getElementById("alerts");
 let infoBarEl = document.getElementById("info-bar");
 
 let config = {};
 let devNames = [];
+let clientColours = {};
 
 socket.on("init", function(data){
 	config = data.config;
 	devNames = config.people.devs;
+	clientColours = config.clients;
 	renderIssues(data.issues);
 	setupInfoBar();
 });
 
 socket.on("issues", function(issues){
 	renderIssues(issues);
+});
+
+socket.on("alert", function(data){
+	let {site, isDown} = data;
+	if (isDown){
+		let alertEl = document.createElement("div");
+		alertEl.className = "alert";
+		alertEl.id = site;
+		alertEl.textContent = `${site} is down`;
+		alertsEl.appendChild(alertEl);
+		let issues = document.getElementsByClassName("issue");
+		for (let i=0; i<issues.length; ++i){
+			issues[i].classList.toggle("rotate");
+		}
+	} else {
+		let alertEl = document.getElementById(site);
+		if (alertEl)
+			alertsEl.removeChild(alertEl);
+	}
 });
 
 function renderIssues(issues){
@@ -47,6 +69,8 @@ function renderIssues(issues){
 		if (colour !== undefined){
 			issue.colour = colour;
 		}
+
+		issue.project.name = issue.project.name.split("Dev Queue - ")[1];
 
 		issue.created_on = new Date(parseInt(issue.created_on.substring(6, 19)));
 
@@ -108,7 +132,7 @@ function createIssueEl(issue){
 	let innerIssueEl = document.createElement("div");
 	innerIssueEl.className = "issue-inner";
 	if (issue.colour)
-		innerIssueEl.style = `background-color: ${issue.colour.bg}; color: ${issue.colour.fg}`;
+		innerIssueEl.style.cssText = `background-color: ${issue.colour.bg}; color: ${issue.colour.fg};`;
 
 	let issueDateEl = document.createElement("div");
 	issueDateEl.className = "date";
@@ -118,7 +142,7 @@ function createIssueEl(issue){
 
 	let issueProjectEl = document.createElement("div");
 	issueProjectEl.className = "project";
-	issueProjectEl.textContent = issue.project.name.split("Dev Queue - ")[1];
+	issueProjectEl.textContent = issue.project.name;
 
 	let issueTitleEl = document.createElement("div");
 	issueTitleEl.className = "title";

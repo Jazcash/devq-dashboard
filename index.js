@@ -27,7 +27,9 @@ app.get("/", function(req, res){
 });
 
 app.get("/pingdom", function(req, res){
-	console.log(req.body);
+	let data = JSON.parse(req.query.message);
+	console.log(data);
+	io.emit("alert", {site: data.host, isDown: data.description === "down" ? true : false});
 	res.end();
 });
 
