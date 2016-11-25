@@ -4,6 +4,7 @@ const http = require("http").Server(app);
 const io = require("socket.io")(http);
 const _ = require("underscore");
 const bodyParser = require("body-parser");
+const favicon = require("express-favicon");
 const Donedone = require("donedone.js");
 const config = require("./config");
 
@@ -19,6 +20,7 @@ fetchIssues();
 
 setInterval(fetchIssues, 5000);
 
+app.use(favicon(__dirname + '/public/favicon.png'));
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
